@@ -1,0 +1,66 @@
+﻿@page "/login"
+
+@using LoanManagementSystem.App.Services.Authentication.Contracts
+@using LoanManagementSystem.App.Services.User.Contracts
+@using LoanManagementSystem.Common.Authentication
+@using LoanManagementSystem.Common.Response
+@using LoanManagementSystem.Common.Token
+
+
+@inject IUserService UserService
+@inject NavigationManager Navigation
+@inject IAuthState Auth
+
+
+<div class="position-absolute top-50 start-50 translate-middle shadow p-3 bg-white rounded-2">
+    <h3 class="mb-5">Log in</h3>
+
+    <EditForm Model="UserToLogin" OnValidSubmit="OnLogIn">
+        <DataAnnotationsValidator />  
+        <ValidationSummary /> 
+        <div class="form-outline mb-4">
+            <label for="name" class="form-label">
+                Name
+            </label>
+            <InputText id="name" type="text" class="form-control" @bind-Value="UserToLogin.Name" />
+        </div>
+
+        <div class="form-outline mb-4">
+            <label for="password" class="form-label">
+                Password
+            </label>
+            <InputText id="password" type="password" class="form-control" @bind-Value="UserToLogin.Password" />
+        </div>
+        
+        <button type="submit" onsubmit="OnLogIn" class="btn btn-primary btn-block">Log in</button>
+        <a href="/signup" class="btn btn-link">Sign up</a>
+    </EditForm>
+</div>
+@if(!LoggedIn){
+    <div class="alert @StatusClass">@Message</div>
+}
+
+
+@code {
+    public UserAuthenticateModel UserToLogin { get; set; } = new UserAuthenticateModel();
+    public bool LoggedIn { get; set; } = true;
+    public string StatusClass = string.Empty;
+    public string Message = string.Empty;
+    public async Task OnLogIn()
+    {
+        Result<TokenModel> response = await UserService.Authenticate(UserToLogin);
+
+        if (response.IsSuccess)
+        {
+            await Auth.LogIn((TokenModel)response.response);
+
+            Navigation.NavigateTo("/");
+        }
+        else
+        {
+            LoggedIn = false;
+            StatusClass = "alert-danger";
+            Message = "Couldnt logged in system. Please try again.";
+        }
+    }
+}

@@ -1,0 +1,23 @@
+﻿<table class="table">
+        <thead>
+            <tr>
+                <th>Month</th>
+                <th>Balance</th>
+                <th>Interest</th>
+                <th>Payment</th>
+                <th>Total</th>                 
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var detail in LoanDetailModelList)
+            {
+            <tr>
+                <td>@detail.Month</td>
+                <td>@detail.Balance</td>
+                <td>@detail.Interest</td>
+                <td>@detail.Payment</td>
+                <td>@detail.Total</td>                         
+            </tr>
+            }
+        </tbody>
+</table>

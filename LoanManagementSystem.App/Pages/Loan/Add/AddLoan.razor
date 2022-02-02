@@ -1,0 +1,55 @@
+﻿@page "/loan/add"
+@using LoanManagementSystem.Common.DataModels.Loan
+<h1 class="page-title">Add Loan</h1>
+@if (!Saved)
+{
+
+    <EditForm Model="@LoanModel" OnValidSubmit="@HandleValidSubmit">
+
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label for="customer">Customer: </label>
+            <InputText id="customer" class="form-control" @bind-Value="@LoanModel.Customer" placeholder="Enter customer name"></InputText>
+            <ValidationMessage For="@(() => LoanModel.Customer)" />
+        </div>
+
+        <div class="mb-3">
+            <label for="sum">Loan sum: </label>
+            <InputNumber id="sum" class="form-control" @bind-Value="@LoanModel.Sum" placeholder="Enter loan sum"></InputNumber>                             
+            <ValidationMessage For="@(() => LoanModel.Sum)" />
+        </div>
+
+        <div class="mb-3">
+            <label for="calculationType" class="col-sm-3">Gender: </label>
+            <InputSelect id="calculationType" class="form-control col-sm-8" @bind-Value=@LoanModel.LoanCalculationType>
+                <option value="@(LoanCalculationType.Annuity)">Annuity</option>
+                <option value="@(LoanCalculationType.EqualPrincipality)">Equal Principality</option>
+                <option value="@(LoanCalculationType.FloatingRate)">Floating Rate</option>
+            </InputSelect>
+        </div>
+
+        <div class="mb-3">
+            <label for="interestPercentage">Interest(%) : </label>
+            <InputNumber id="interestPercentage" class="form-control" @bind-Value="@LoanModel.InterestPercentage" placeholder="Enter interest percentage"></InputNumber>                             
+            <ValidationMessage For="@(() => LoanModel.InterestPercentage)" />
+        </div>
+
+        <div class="mb-3">
+            <label for="months">Term in Months: </label>
+            <InputNumber id="months" class="form-control" @bind-Value="@LoanModel.Months" placeholder="Enter term in months"></InputNumber>                             
+            <ValidationMessage For="@(() => LoanModel.Months)" />
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">Calculate</button>
+        <button type="submit" class="btn btn-primary" @onclick="@NavigateToMain">Main menu</button>
+    </EditForm>
+}
+else
+{
+    <div class="alert @StatusClass">@Message</div>
+}
+
+ 

@@ -1,0 +1,49 @@
+﻿@page "/loans"
+
+<h1 class="page-title">All Loans</h1>
+
+@if(IsSuccess)
+{
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Customer</th>
+                <th>Sum</th>
+                <th>Type</th>
+                <th>Interest</th>
+                <th>Terms</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var loan in LoanModels)
+            {
+            <tr>
+                <td>@loan.Customer</td>
+                <td>@loan.Sum</td>
+                <td>@loan.LoanCalculationType</td>
+                <td>@loan.InterestPercentage</td>
+                <td>@loan.Months</td>
+                <td>
+                    <a href="@($"loan/calculated/{loan.Id}")" class="btn btn-primary table-btn">
+                        View
+                    </a>          
+                </td>
+                <td>
+                    <a href="@($"loan/update/{loan.Id}")" class="btn btn-primary table-btn">
+                        Edit
+                    </a>          
+                </td>
+
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+else{
+      <div class="alert @StatusClass">@Message</div>
+}
+
+

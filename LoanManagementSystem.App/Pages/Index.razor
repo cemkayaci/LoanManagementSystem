@@ -1,0 +1,25 @@
+﻿@page "/"
+
+@using LoanManagementSystem.App.Services.Authentication.Contracts
+
+@inject IAuthState Auth
+@inject NavigationManager Navigation
+
+<PageTitle>Index</PageTitle>
+
+<h1>Loan Management System</h1>
+
+<div class="alert alert-warning" role="alert">
+   You can select the desired action from the left menu.
+</div>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        if (!(await Auth.IsAuthorized()))
+        {
+            Navigation.NavigateTo("/login");
+        }
+    }
+}
+

@@ -1,0 +1,61 @@
+﻿@page "/signup"
+@using LoanManagementSystem.App.Services.Authentication.Contracts
+@using LoanManagementSystem.App.Services.User.Contracts
+@using LoanManagementSystem.Common.Authentication
+
+
+
+@inject IAuthState Auth
+@inject NavigationManager NavigationManager
+@inject IUserService UserService
+
+<div class="position-absolute top-50 start-50 translate-middle shadow p-3 bg-white rounded-2">
+    <h3 class="mb-5">SignUp</h3>
+
+    <EditForm Model="UserToLogin" OnValidSubmit="OnSignUp">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-outline mb-4">
+            <label for="name">
+                Name
+            </label>
+            <InputText id="name" class="form-control" @bind-Value="UserToLogin.Name" />
+        </div>
+
+        <div class="form-outline mb-4">
+            <label for="password">
+                Password
+            </label>
+            <InputText id="password" type="password" class="form-control" @bind-Value="UserToLogin.Password" />
+        </div>
+
+        <button type="submit" onsubmit="OnSignUp" class="btn btn-primary">Sign Up</button>
+        <a href="/login" class="btn btn-link">Log In</a>
+    </EditForm>
+</div>
+
+@if(!SignedUp){
+    <div class="alert @StatusClass">@Message</div>
+}
+@code {
+    public UserAuthenticateModel UserToLogin { get; set; } = new UserAuthenticateModel();
+    public bool SignedUp { get; set; } = true;
+    public string StatusClass = string.Empty;
+    public string Message = string.Empty;
+
+    public async Task OnSignUp()
+    {
+        bool response = await UserService.SignUp(UserToLogin);
+
+        if (response)
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            SignedUp = false;
+            StatusClass = "alert-danger";
+            Message = "Couldnt logged in system. Please try again.";
+        }
+    }
+}

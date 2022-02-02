@@ -1,0 +1,42 @@
+﻿@page "/loan/calculated/{loanId}"
+@using LoanManagementSystem.App.Pages.Loan.Details
+
+@if (IsSuccess)
+{
+    <div class="card">
+        <div class="card-header">
+
+            <table>
+                <tr>
+                    <td><b>Customer :</b></td>
+                    <td><b>@LoanModel.Customer</b></td>
+                </tr>
+                <tr>
+                    <td><b>Sum :</b></td>
+                    <td><b>@LoanModel.Sum</b></td>
+                </tr>
+                <tr>
+                    <td><b>Type :</b></td>
+                    <td><b>@LoanModel.LoanCalculationType</b></td>
+                </tr>
+                <tr>
+                    <td><b>Interest :</b></td>
+                    <td><b>@LoanModel.InterestPercentage %</b></td>
+                </tr>
+                <tr>
+                    <td><b>Terms :</b></td>
+                    <td><b>@LoanModel.Months</b></td>
+                </tr>
+            </table>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Payment Graph</h5>
+            <LoanDetails LoanDetailModelList="@LoanModel.LoanDetails"></LoanDetails>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert @StatusClass">@Message</div>
+}
+
